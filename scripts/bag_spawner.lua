@@ -10,10 +10,10 @@ kompletten Satz: 2× (1–13 in Schwarz, Rot, Blau, Orange) + 2 Joker.
 --------------------------------------------------------------------]]
 
 -- >>> HIER ANPASSEN <<<
-local BASE_URL = "https://raw.githubusercontent.com/DEIN_NAME/DEIN_REPO/main/tiles/"
+local BASE_URL = "https://raw.githubusercontent.com/Pausebanause/Rummy/main/tiles/"
 
 local TILE_SCALE     = 0.5    -- Größe der Steine (an den Ständer anpassen)
-local TILE_THICKNESS = 0.7    -- Dicke (relativ); zusammen mit Scale tunen
+local TILE_THICKNESS = 0.27    -- Dicke (relativ); zusammen mit Scale tunen
 local COLORS = {"black", "red", "blue", "orange"}
 
 function onLoad()
@@ -49,6 +49,7 @@ function spawnAllCo()
             local tile = spawnObject({
                 type     = "Custom_Tile",
                 position = self.getPosition() + Vector(0, 3, 0),
+                rotation = {0, 0, 180},   -- verdeckt (Rückseite oben)
                 scale    = {TILE_SCALE, 1, TILE_SCALE},
                 sound    = false,
             })

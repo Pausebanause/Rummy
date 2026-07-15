@@ -80,8 +80,8 @@ function buildUI()
             input_function = "inpName" .. n, function_owner = self,
             position = {fx(i), yTop, fz(L.nameTop, L.nameBot)},
             scale = {ES, ES, ES},
-            width = fwidth * F, height = fh(L.nameTop, L.nameBot) * 0.82 * F,
-            font_size = 26 * F, alignment = 3, validation = 1,
+            width = fwidth * 1.06 * F, height = fh(L.nameTop, L.nameBot) * 0.88 * F,
+            font_size = 18 * F, alignment = 3, validation = 1,
             value = values.name[n], label = "",
             color = PAPER, font_color = INK,
             tooltip = "Spielername"
