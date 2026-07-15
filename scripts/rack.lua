@@ -42,7 +42,7 @@ end
 function setOwner(color)
     removeZone()
 
-    local b   = self.getBounds()
+    local b   = self.getBounds()   -- Welt-Box: enthält die Drehung des Ständers bereits
     local pad = 0.4
     local pos = {
         x = b.center.x,
@@ -58,7 +58,7 @@ function setOwner(color)
     spawnObject({
         type              = "FogOfWarTrigger",   -- = Hidden Zone
         position          = pos,
-        rotation          = self.getRotation(),
+        rotation          = {0, 0, 0},   -- Zonen spawnen stets achsenparallel
         scale             = scale,
         sound             = false,
         callback_function = function(zone)
