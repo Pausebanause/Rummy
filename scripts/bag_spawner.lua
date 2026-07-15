@@ -13,7 +13,7 @@ kompletten Satz: 2× (1–13 in Schwarz, Rot, Blau, Orange) + 2 Joker.
 local BASE_URL = "https://raw.githubusercontent.com/Pausebanause/Rummy/main/tiles/"
 
 local TILE_SCALE     = 0.5    -- Größe der Steine (an den Ständer anpassen)
-local TILE_THICKNESS = 0.27    -- Dicke (relativ); zusammen mit Scale tunen
+local TILE_THICKNESS = 0.135    -- Dicke (relativ); zusammen mit Scale tunen
 local COLORS = {"black", "red", "blue", "orange"}
 
 function onLoad()
@@ -106,6 +106,6 @@ function onObjectDrop(_, obj)
     if best == nil then return end
 
     local r  = obj.getRotation()
-    local ry = best.getRotation().y
+    local ry = (best.getRotation().y + 180) % 360   -- +180: Zahlen zum Spieler hin
     obj.setRotationSmooth({r.x, ry, r.z}, false, true)   -- Flip-Zustand bleibt erhalten
 end
