@@ -49,13 +49,12 @@ function spawnAllCo()
             local tile = spawnObject({
                 type     = "Custom_Tile",
                 position = self.getPosition() + Vector(0, 3, 0),
-                rotation = {0, 0, 180},   -- verdeckt (Rückseite oben)
                 scale    = {TILE_SCALE, 1, TILE_SCALE},
                 sound    = false,
             })
             tile.setCustomObject({
-                image        = BASE_URL .. face,
-                image_bottom = BASE_URL .. "back.png",
+                image        = BASE_URL .. "back.png",   -- Oberseite = Rücken:
+                image_bottom = BASE_URL .. face,          -- Steine liegen von Natur aus verdeckt
                 type         = 3,              -- 3 = abgerundetes Rechteck
                 thickness    = TILE_THICKNESS,
                 stackable    = false,
@@ -77,4 +76,36 @@ function spawnAllCo()
     self.shuffle()
     broadcastToAll(made .. " Steine im Beutel – gemischt und bereit!", {0.2, 0.8, 0.2})
     return 1
+end
+
+
+--[[ Auto-Ausrichtung ─────────────────────────────────────────────────
+Wird ein Stein in der Nähe eines Ständers abgelegt, dreht er sich
+automatisch in dessen Blickrichtung – egal von welcher Tischseite man
+zieht, die Zahlen stehen dann richtig herum.
+--------------------------------------------------------------------]]
+local ORIENT_RADIUS = 14   -- Wirkungskreis um jeden Ständer (Einheiten)
+
+function onObjectDrop(_, obj)
+    if obj == nil or obj.type ~= "Tile" then return end
+    local ok, custom = pcall(function() return obj.getCustomObject() end)
+    if not ok or custom == nil or custom.image == nil
+       or not string.find(custom.image, BASE_URL, 1, true) then
+        return   -- fremdes Tile, nicht anfassen
+    end
+
+    local p = obj.getPosition()
+    local best, bestDist = nil, ORIENT_RADIUS
+    for _, o in ipairs(getAllObjects()) do
+        local n = o.getName() or ""
+        if string.find(n, "Ständer", 1, true) then
+            local d = Vector.distance(p, o.getPosition())
+            if d < bestDist then best, bestDist = o, d end
+        end
+    end
+    if best == nil then return end
+
+    local r  = obj.getRotation()
+    local ry = best.getRotation().y
+    obj.setRotationSmooth({r.x, ry, r.z}, false, true)   -- Flip-Zustand bleibt erhalten
 end
